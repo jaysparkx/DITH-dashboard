@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { SidebarProvider } from './contexts/SidebarContext';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
@@ -15,20 +16,21 @@ import ONFTMarketplace from './pages/ONFTMarketplace';
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-          <Sidebar />
-          <Header />
-          <Routes>
+      <SidebarProvider>
+        <Router>
+          <div className="min-h-screen bg-[#2a2a2a]">
+            <Sidebar />
+            <Header />
+            <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/rwa-vault" element={<RWAVault />} />
             <Route path="/yield-vaults" element={<YieldVaults />} />
             <Route path="/assets-monitoring" element={<AssetsMonitoring />} />
-            <Route path="/rwa-market" element={<ONFTMarketplace />} />
+            <Route path="/rwa-market" element={<RWAMarket />} />
             <Route path="/transaction-history" element={<TransactionHistory />} />
             <Route path="/governance" element={<Governance />} />
             <Route path="/cusd-management" element={
-              <div className="ml-64 pt-16 min-h-screen bg-gray-50 dark:bg-gray-900">
+              <div className="ml-[280px] pt-16 min-h-screen bg-[#2a2a2a] transition-all duration-300">
                 <div className="p-6">
                   <div className="flex items-center justify-center min-h-[60vh]">
                     <div className="text-center max-w-md">
@@ -37,11 +39,11 @@ function App() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                         </svg>
                       </div>
-                      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">cUSD Management</h1>
-                      <p className="text-gray-600 dark:text-gray-400 mb-6">
+                      <h1 className="text-3xl font-bold text-white mb-4">cUSD Management</h1>
+                      <p className="text-gray-400 mb-6">
                         Advanced stablecoin management tools are currently in development. Track, manage, and optimize your cUSD positions with powerful analytics.
                       </p>
-                      <div className="inline-flex items-center px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-medium">
+                      <div className="inline-flex items-center px-4 py-2 bg-blue-900/30 text-blue-400 rounded-lg text-sm font-medium">
                         🚀 Launching Q2 2024
                       </div>
                     </div>
@@ -50,7 +52,7 @@ function App() {
               </div>
             } />
             <Route path="/ai-services" element={
-              <div className="ml-64 pt-16 min-h-screen bg-gray-50 dark:bg-gray-900">
+              <div className="ml-[280px] pt-16 min-h-screen bg-[#2a2a2a] transition-all duration-300">
                 <div className="p-6">
                   <div className="flex items-center justify-center min-h-[60vh]">
                     <div className="text-center max-w-md">
@@ -59,11 +61,11 @@ function App() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
                       </div>
-                      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">AI Services</h1>
-                      <p className="text-gray-600 dark:text-gray-400 mb-6">
+                      <h1 className="text-3xl font-bold text-white mb-4">AI Services</h1>
+                      <p className="text-gray-400 mb-6">
                         Intelligent portfolio optimization, risk assessment, and automated trading strategies powered by advanced machine learning algorithms.
                       </p>
-                      <div className="inline-flex items-center px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg text-sm font-medium">
+                      <div className="inline-flex items-center px-4 py-2 bg-purple-900/30 text-purple-400 rounded-lg text-sm font-medium">
                         🤖 Beta Testing Phase
                       </div>
                     </div>
@@ -72,7 +74,7 @@ function App() {
               </div>
             } />
             <Route path="/protocol-analytics" element={
-              <div className="ml-64 pt-16 min-h-screen bg-gray-50 dark:bg-gray-900">
+              <div className="ml-[280px] pt-16 min-h-screen bg-[#2a2a2a] transition-all duration-300">
                 <div className="p-6">
                   <div className="flex items-center justify-center min-h-[60vh]">
                     <div className="text-center max-w-md">
@@ -81,11 +83,11 @@ function App() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                       </div>
-                      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Protocol Analytics</h1>
-                      <p className="text-gray-600 dark:text-gray-400 mb-6">
+                      <h1 className="text-3xl font-bold text-white mb-4">Protocol Analytics</h1>
+                      <p className="text-gray-400 mb-6">
                         Deep dive into protocol metrics, governance insights, and comprehensive network statistics. Advanced analytics dashboard for power users.
                       </p>
-                      <div className="inline-flex items-center px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg text-sm font-medium">
+                      <div className="inline-flex items-center px-4 py-2 bg-green-900/30 text-green-400 rounded-lg text-sm font-medium">
                         📊 In Development
                       </div>
                     </div>
@@ -94,7 +96,7 @@ function App() {
               </div>
             } />
             <Route path="/settings" element={
-              <div className="ml-64 pt-16 min-h-screen bg-gray-50 dark:bg-gray-900">
+              <div className="ml-[280px] pt-16 min-h-screen bg-[#2a2a2a] transition-all duration-300">
                 <div className="p-6">
                   <div className="flex items-center justify-center min-h-[60vh]">
                     <div className="text-center max-w-md">
@@ -104,11 +106,11 @@ function App() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                       </div>
-                      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Settings & Account</h1>
-                      <p className="text-gray-600 dark:text-gray-400 mb-6">
+                      <h1 className="text-3xl font-bold text-white mb-4">Settings & Account</h1>
+                      <p className="text-gray-400 mb-6">
                         Customize your experience with advanced settings, account management, security preferences, and notification controls.
                       </p>
-                      <div className="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-lg text-sm font-medium">
+                      <div className="inline-flex items-center px-4 py-2 bg-gray-700 text-gray-400 rounded-lg text-sm font-medium">
                         ⚙️ Feature Complete Soon
                       </div>
                     </div>
@@ -116,9 +118,10 @@ function App() {
                 </div>
               </div>
             } />
-          </Routes>
-        </div>
-      </Router>
+            </Routes>
+          </div>
+        </Router>
+      </SidebarProvider>
     </ThemeProvider>
   );
 }

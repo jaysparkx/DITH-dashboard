@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSidebar } from '../contexts/SidebarContext';
 import ProgressIndicator from './ProgressIndicator';
 import ActionCard from './ActionCard';
 import StatCard from './StatCard';
@@ -16,22 +17,23 @@ import {
 
 const Dashboard: React.FC = () => {
   const [showHealthModal, setShowHealthModal] = useState(false);
+  const { isCollapsed } = useSidebar();
 
   return (
-    <div className="ml-64 pt-16 min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className={`${isCollapsed ? 'ml-16' : 'ml-[280px]'} pt-16 min-h-screen bg-[#2a2a2a] transition-all duration-300`}>
       <div className="p-6">
         {/* Welcome Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">EDITH Network Analytics</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">
+              <h1 className="text-3xl font-bold text-white">EDITH Network Analytics</h1>
+              <p className="text-gray-400 mt-2">
                 Real-time network performance and infrastructure metrics for Web3 RWA ecosystem
               </p>
             </div>
             <button
               onClick={() => setShowHealthModal(true)}
-              className="flex items-center space-x-2 px-4 py-2 bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/50 text-green-700 dark:text-green-400 rounded-xl transition-colors duration-200"
+              className="flex items-center space-x-2 px-4 py-2 bg-green-900/30 hover:bg-green-900/50 text-green-400 rounded-xl transition-colors duration-200"
             >
               <HeartIcon className="w-5 h-5" />
               <span className="text-sm font-medium">Network Health</span>

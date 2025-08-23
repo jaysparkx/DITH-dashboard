@@ -1,39 +1,42 @@
 import React from 'react';
-import { BellIcon, SunIcon, MoonIcon, WalletIcon } from '@heroicons/react/24/outline';
-import { useTheme } from '../contexts/ThemeContext';
+import { BellIcon, WalletIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import { useSidebar } from '../contexts/SidebarContext';
 
 const Header: React.FC = () => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isCollapsed, toggleSidebar } = useSidebar();
 
   return (
-    <header className="bg-white dark:bg-edith-dark border-b border-gray-200 dark:border-gray-700 fixed top-0 right-0 left-64 h-16 z-10">
-      <div className="flex items-center justify-end h-full px-6">
-        {/* Right Side Actions */}
-        <div className="flex items-center space-x-4">
-          {/* Notifications */}
-          <button className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-            <BellIcon className="w-6 h-6" />
-            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-
-          {/* Theme Toggle */}
+    <header className={`bg-[#2a2a2a] border-b border-gray-700/50 fixed top-0 right-0 ${isCollapsed ? 'left-16' : 'left-[280px]'} h-16 z-20 transition-all duration-300 shadow-sm`}>
+      <div className="flex items-center justify-between h-full px-6">
+        {/* Left Side - Mobile Burger Button */}
+        <div className="flex items-center">
           <button
-            onClick={toggleTheme}
-            className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+            onClick={toggleSidebar}
+            className="md:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
-            {isDark ? <SunIcon className="w-6 h-6" /> : <MoonIcon className="w-6 h-6" />}
+            <Bars3Icon className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Right Side Actions */}
+        <div className="flex items-center space-x-3">
+          {/* Notifications */}
+          <button className="relative p-2 text-gray-300 hover:text-white rounded-lg hover:bg-gray-700/50 transition-all duration-200">
+            <BellIcon className="w-5 h-5" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
 
           {/* Network Status */}
-          <div className="flex items-center space-x-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full">
+          <div className="hidden sm:flex items-center space-x-2 px-3 py-2 bg-green-900/30 text-green-400 rounded-lg border border-green-700/30">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span className="text-sm font-medium">Celo Mainnet</span>
           </div>
 
           {/* Connect Wallet Button */}
-          <button className="flex items-center space-x-2 px-4 py-2 bg-edith-primary hover:bg-edith-primary/90 text-white rounded-lg transition-colors duration-200 font-medium text-sm">
+          <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200 font-medium text-sm shadow-lg">
             <WalletIcon className="w-4 h-4" />
-            <span>Connect Wallet</span>
+            <span className="hidden sm:inline">Connect Wallet</span>
+            <span className="sm:hidden">Wallet</span>
           </button>
         </div>
       </div>
