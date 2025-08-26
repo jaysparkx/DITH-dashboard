@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { SidebarProvider } from './contexts/SidebarContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
@@ -15,13 +16,14 @@ import ONFTMarketplace from './pages/ONFTMarketplace';
 
 function App() {
   return (
-    <ThemeProvider>
-      <SidebarProvider>
-        <Router>
-          <div className="min-h-screen bg-[#2a2a2a]">
-            <Sidebar />
-            <Header />
-            <Routes>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <SidebarProvider>
+          <Router>
+            <div className="min-h-screen bg-[#2a2a2a]">
+              <Sidebar />
+              <Header />
+              <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/rwa-vault" element={<RWAVault />} />
             <Route path="/yield-vaults" element={<YieldVaults />} />
@@ -118,11 +120,12 @@ function App() {
                 </div>
               </div>
             } />
-            </Routes>
-          </div>
-        </Router>
-      </SidebarProvider>
-    </ThemeProvider>
+              </Routes>
+            </div>
+          </Router>
+        </SidebarProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

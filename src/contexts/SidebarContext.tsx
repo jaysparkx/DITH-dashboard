@@ -25,19 +25,31 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
-    setIsCollapsed(prev => !prev);
+    try {
+      setIsCollapsed(prev => !prev);
+    } catch (error) {
+      console.warn('Sidebar toggle error:', error);
+    }
   };
 
   const collapseSidebar = () => {
-    setIsCollapsed(true);
+    try {
+      setIsCollapsed(true);
+    } catch (error) {
+      console.warn('Sidebar collapse error:', error);
+    }
   };
 
   const expandSidebar = () => {
-    setIsCollapsed(false);
+    try {
+      setIsCollapsed(false);
+    } catch (error) {
+      console.warn('Sidebar expand error:', error);
+    }
   };
 
   const value = {
-    isCollapsed,
+    isCollapsed: isCollapsed ?? false,
     toggleSidebar,
     collapseSidebar,
     expandSidebar,

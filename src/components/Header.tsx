@@ -3,7 +3,11 @@ import { BellIcon, WalletIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import { useSidebar } from '../contexts/SidebarContext';
 
 const Header: React.FC = () => {
-  const { isCollapsed, toggleSidebar } = useSidebar();
+  const sidebarContext = useSidebar();
+  
+  // Defensive programming to prevent extension errors
+  const isCollapsed = sidebarContext?.isCollapsed ?? false;
+  const toggleSidebar = sidebarContext?.toggleSidebar ?? (() => {});
 
   return (
     <header className={`bg-[#2a2a2a] border-b border-gray-700/50 fixed top-0 right-0 ${isCollapsed ? 'left-16' : 'left-[280px]'} h-16 z-20 transition-all duration-300 shadow-sm`}>

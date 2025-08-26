@@ -35,11 +35,16 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
   const { isCollapsed, toggleSidebar } = useSidebar();
 
+  // Defensive programming to prevent extension errors
+  const safeLocation = location || { pathname: '/' };
+  const safeToggleSidebar = toggleSidebar || (() => {});
+  const safeIsCollapsed = isCollapsed ?? false;
+
   return (
-    <div className={`${isCollapsed ? 'w-16' : 'w-[280px]'} bg-[#1a1a1a] h-screen fixed left-0 top-0 flex flex-col transition-all duration-300 z-30 shadow-2xl`}>
+    <div className={`${safeIsCollapsed ? 'w-16' : 'w-[280px]'} bg-[#1a1a1a] h-screen fixed left-0 top-0 flex flex-col transition-all duration-300 z-30 shadow-2xl`}>
       {/* Logo */}
       <div className="px-6 py-8 border-b border-gray-800/50">
-        {!isCollapsed ? (
+        {!safeIsCollapsed ? (
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-lg">E</span>
@@ -59,10 +64,10 @@ const Sidebar: React.FC = () => {
         
         {/* Toggle Button */}
         <button
-          onClick={toggleSidebar}
+          onClick={safeToggleSidebar}
           className="absolute -right-3 top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200 hover:shadow-xl"
         >
-          {isCollapsed ? (
+          {safeIsCollapsed ? (
             <ChevronRightIcon className="w-4 h-4" />
           ) : (
             <ChevronLeftIcon className="w-4 h-4" />
@@ -73,42 +78,46 @@ const Sidebar: React.FC = () => {
       {/* Navigation */}
       <nav className="flex-1 py-6 overflow-y-auto">
         <div className="space-y-1">
-          {menuItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              className={`flex items-center mx-3 px-4 py-3 text-sm rounded-xl transition-all duration-200 group relative ${
-                location.pathname === item.path
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
-              } ${isCollapsed ? 'justify-center' : ''}`}
-              title={isCollapsed ? item.name : ''}
-            >
-              <item.icon className={`w-5 h-5 ${isCollapsed ? '' : 'mr-4'} flex-shrink-0`} />
-              {!isCollapsed && (
-                <span className="truncate font-medium">{item.name}</span>
-              )}
-              
-              {/* Active indicator */}
-              {location.pathname === item.path && !isCollapsed && (
-                <div className="absolute right-4 w-2 h-2 bg-white rounded-full"></div>
-              )}
-              
-              {/* Tooltip for collapsed state */}
-              {isCollapsed && (
-                <div className="absolute left-16 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-50 shadow-xl">
-                  {item.name}
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></div>
-                </div>
-              )}
-            </Link>
-          ))}
+          {menuItems.map((item) => {
+            if (!item || !item.name || !item.path || !item.icon) return null;
+            
+            return (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={`flex items-center mx-3 px-4 py-3 text-sm rounded-xl transition-all duration-200 group relative ${
+                  safeLocation.pathname === item.path
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
+                } ${safeIsCollapsed ? 'justify-center' : ''}`}
+                title={safeIsCollapsed ? item.name : ''}
+              >
+                <item.icon className={`w-5 h-5 ${safeIsCollapsed ? '' : 'mr-4'} flex-shrink-0`} />
+                {!safeIsCollapsed && (
+                  <span className="truncate font-medium">{item.name}</span>
+                )}
+                
+                {/* Active indicator */}
+                {safeLocation.pathname === item.path && !safeIsCollapsed && (
+                  <div className="absolute right-4 w-2 h-2 bg-white rounded-full"></div>
+                )}
+                
+                {/* Tooltip for collapsed state */}
+                {safeIsCollapsed && (
+                  <div className="absolute left-16 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-50 shadow-xl">
+                    {item.name}
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></div>
+                  </div>
+                )}
+              </Link>
+            );
+          })}
         </div>
       </nav>
 
       {/* Footer */}
       <div className="p-6 border-t border-gray-800/50">
-        {!isCollapsed ? (
+        {!safeIsCollapsed ? (
           <div className="flex items-center space-x-3 p-3 rounded-xl bg-gray-800/30 hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer">
             <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0 shadow-lg">
               <span className="text-sm">U</span>
