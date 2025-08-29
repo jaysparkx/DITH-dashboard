@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSidebar } from '../contexts/SidebarContext';
 import {
   CpuChipIcon,
   BuildingOfficeIcon,
@@ -8,7 +10,6 @@ import {
   MapPinIcon,
   XMarkIcon,
   ShoppingCartIcon,
-  InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 
 interface oNFT {
@@ -193,12 +194,13 @@ const mockONFTs: oNFT[] = [
 ];
 
 const RWAVault: React.FC = () => {
+  const navigate = useNavigate();
+  const { isCollapsed } = useSidebar();
   const [activeTab, setActiveTab] = useState('all');
   const [filterType, setFilterType] = useState('all');
   const [selectedAsset, setSelectedAsset] = useState<number | null>(null);
   const [purchaseQuantity, setPurchaseQuantity] = useState<{ [key: number]: number }>({});
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [modalAsset, setModalAsset] = useState<oNFT | null>(null);
 
   const getIcon = (type: string) => {
@@ -298,23 +300,21 @@ const RWAVault: React.FC = () => {
   };
 
   const openDetailsModal = (nft: oNFT) => {
-    setModalAsset(nft);
-    setShowDetailsModal(true);
+    navigate(`/asset/${nft.id}`);
   };
 
   const closeModals = () => {
     setShowPurchaseModal(false);
-    setShowDetailsModal(false);
     setModalAsset(null);
   };
 
   return (
-    <div className="ml-64 pt-16 min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className={`${isCollapsed ? 'ml-16' : 'ml-[280px]'} pt-16 min-h-screen bg-[#2a2a2a] transition-all duration-300`}>
       <div className="p-6">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">RWA Asset Marketplace</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <h1 className="text-3xl font-bold text-white">RWA Asset Marketplace</h1>
+          <p className="text-gray-400 mt-2">
             Purchase fractional ownership of tokenized real-world assets
           </p>
         </div>
@@ -464,7 +464,7 @@ const RWAVault: React.FC = () => {
                       {/* Compact Purchase Controls */}
                       <div>
                         <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                          Purchase Quantity
+                          oNFT Quantity
                         </label>
                         <div className="flex items-center space-x-2">
                           <button
@@ -548,7 +548,7 @@ const RWAVault: React.FC = () => {
                         }}
                         className="flex-1 px-3 py-2 bg-gradient-to-r from-edith-primary to-edith-secondary text-white rounded-lg text-xs font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200"
                       >
-                        {isExpanded ? 'Buy Now' : 'Quick Buy'}
+                        {isExpanded ? 'Buy oNFTs' : 'Buy oNFTs'}
                       </button>
                     ) : (
                       <button disabled className="flex-1 px-3 py-2 bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 rounded-lg text-xs cursor-not-allowed">
@@ -583,7 +583,7 @@ const RWAVault: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Purchase</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Buy ownership tokens</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Buy ownership oNFTs</p>
                   </div>
                 </div>
                 <button
@@ -623,7 +623,7 @@ const RWAVault: React.FC = () => {
                 <div className="space-y-4 mb-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Purchase Quantity
+                      oNFT Quantity
                     </label>
                     <div className="flex items-center space-x-3">
                       <button
@@ -673,13 +673,13 @@ const RWAVault: React.FC = () => {
                   <h5 className="font-semibold text-gray-900 dark:text-white mb-3">Purchase Summary</h5>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">Tokens to Buy:</span>
+                      <span className="text-gray-600 dark:text-gray-400">oNFTs to Buy:</span>
                       <span className="font-semibold text-gray-900 dark:text-white">
                         {(purchaseQuantity[modalAsset.id] || modalAsset.minPurchase).toLocaleString()}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">Price per Token:</span>
+                      <span className="text-gray-600 dark:text-gray-400">Price per oNFT:</span>
                       <span className="font-semibold text-gray-900 dark:text-white">${modalAsset.pricePerToken}</span>
                     </div>
                     <div className="flex justify-between text-sm">
@@ -708,7 +708,7 @@ const RWAVault: React.FC = () => {
                     Cancel
                   </button>
                   <button className="flex-1 px-4 py-3 bg-gradient-to-r from-edith-primary to-edith-secondary text-white rounded-lg font-semibold hover:shadow-lg transition-all">
-                    Purchase Tokens
+                    Purchase oNFTs
                   </button>
                 </div>
               </div>
@@ -716,196 +716,6 @@ const RWAVault: React.FC = () => {
           </div>
         )}
 
-        {/* Details Modal */}
-        {showDetailsModal && modalAsset && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              {/* Modal Header */}
-              <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex items-center space-x-3">
-                  <div className={`p-2 rounded-lg ${getColorClass(modalAsset.type)}`}>
-                    <InformationCircleIcon className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Asset Details</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Complete asset information</p>
-                  </div>
-                </div>
-                <button
-                  onClick={closeModals}
-                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                >
-                  <XMarkIcon className="w-6 h-6" />
-                </button>
-              </div>
-
-              {/* Asset Overview */}
-              <div className="p-6">
-                <div className="flex items-start space-x-4 mb-6">
-                  <div className={`w-20 h-20 rounded-2xl ${getColorClass(modalAsset.type)} flex items-center justify-center`}>
-                    {React.createElement(getIcon(modalAsset.type), { className: "w-10 h-10" })}
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{modalAsset.name}</h4>
-                    <div className="flex items-center text-gray-500 dark:text-gray-400 mb-3">
-                      <MapPinIcon className="w-4 h-4 mr-1" />
-                      {modalAsset.location}
-                    </div>
-                    <div className="flex items-center space-x-2 mb-3">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(modalAsset.status)}`}>
-                        <span className={`w-2 h-2 rounded-full mr-2 ${modalAsset.status === 'active' ? 'bg-green-500' : modalAsset.status === 'maintenance' ? 'bg-yellow-500' : 'bg-red-500'}`}></span>
-                        {modalAsset.status.charAt(0).toUpperCase() + modalAsset.status.slice(1)}
-                      </span>
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getColorClass(modalAsset.type)}`}>
-                        {modalAsset.type.replace('-', ' ').toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Key Metrics */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Total Value</p>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">{modalAsset.totalValue}</p>
-                  </div>
-                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">APY</p>
-                    <p className="text-lg font-bold text-green-600 dark:text-green-400">{modalAsset.apy}%</p>
-                  </div>
-                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Price/Token</p>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">${modalAsset.pricePerToken}</p>
-                  </div>
-                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Available</p>
-                    <p className="text-lg font-bold text-edith-primary">{modalAsset.availableTokens.toLocaleString()}</p>
-                  </div>
-                </div>
-
-                {/* Technical Details based on asset type */}
-                <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl p-6">
-                  <h5 className="font-semibold text-gray-900 dark:text-white mb-4">
-                    {modalAsset.type === 'gpu' && 'GPU Cluster Specifications'}
-                    {modalAsset.type === 'real-estate' && 'Property Information'}
-                    {modalAsset.type === 'energy' && 'Energy Asset Details'}
-                    {modalAsset.type === 'financial' && 'Financial Instrument Details'}
-                  </h5>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {modalAsset.type === 'gpu' && (
-                      <>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">GPU Model</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.gpuModel}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Compute Power</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.computePower}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Uptime</p>
-                          <p className="font-semibold text-green-600 dark:text-green-400">{modalAsset.details.uptime}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Power Consumption</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.powerConsumption}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Cooling System</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.coolingType}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Datacenter Tier</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.datacenterTier}</p>
-                        </div>
-                      </>
-                    )}
-                    
-                    {modalAsset.type === 'real-estate' && (
-                      <>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Property Type</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.propertyType}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Square Footage</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.squareFootage}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Year Built</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.buildYear}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Occupancy Rate</p>
-                          <p className="font-semibold text-green-600 dark:text-green-400">{modalAsset.details.occupancyRate}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Rental Yield</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.rentalYield}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Property Manager</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.propertyManager}</p>
-                        </div>
-                      </>
-                    )}
-                    
-                    {modalAsset.type === 'energy' && (
-                      <>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Energy Type</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.energyType}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Capacity</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.capacity}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Efficiency</p>
-                          <p className="font-semibold text-green-600 dark:text-green-400">{modalAsset.details.efficiency}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Carbon Offset</p>
-                          <p className="font-semibold text-green-600 dark:text-green-400">{modalAsset.details.carbonOffset}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Grid Connection</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.gridConnection}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Maintenance</p>
-                          <p className="font-semibold text-gray-900 dark:text-white">{modalAsset.details.maintenanceSchedule}</p>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex space-x-3 mt-6">
-                  <button
-                    onClick={closeModals}
-                    className="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                  >
-                    Close
-                  </button>
-                  {modalAsset.availableTokens > 0 && (
-                    <button
-                      onClick={() => {
-                        closeModals();
-                        openPurchaseModal(modalAsset);
-                      }}
-                      className="flex-1 px-4 py-3 bg-gradient-to-r from-edith-primary to-edith-secondary text-white rounded-lg font-semibold hover:shadow-lg transition-all"
-                    >
-                      Purchase Tokens
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

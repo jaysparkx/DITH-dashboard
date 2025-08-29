@@ -31,9 +31,9 @@ const Header: React.FC = () => {
           </button>
 
           {/* Network Status */}
-          <div className="hidden sm:flex items-center space-x-2 px-3 py-2 bg-green-900/30 text-green-400 rounded-lg border border-green-700/30">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium">Celo Mainnet</span>
+          <div className="hidden sm:flex items-center space-x-2 px-3 py-2 bg-yellow-900/30 text-yellow-400 rounded-lg border border-yellow-700/30">
+            <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
+            <span className="text-sm font-medium">Testnet</span>
           </div>
 
           {/* Connect Wallet Button */}

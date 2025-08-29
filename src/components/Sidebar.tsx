@@ -9,25 +9,23 @@ import {
   ShoppingBagIcon,
   ClockIcon,
   CurrencyDollarIcon,
-  CpuChipIcon,
   UsersIcon,
-  ChartPieIcon,
   Cog6ToothIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  BuildingLibraryIcon,
 } from '@heroicons/react/24/outline';
 
 const menuItems = [
-  { name: 'EDITH Dashboard', icon: HomeIcon, path: '/' },
+  { name: 'Protocol Analytics', icon: HomeIcon, path: '/' },
   { name: 'RWA Vault', icon: CubeIcon, path: '/rwa-vault' },
   { name: 'Yield Vaults', icon: BanknotesIcon, path: '/yield-vaults' },
   { name: 'Assets Monitoring', icon: ChartBarIcon, path: '/assets-monitoring' },
   { name: 'RWA Market', icon: ShoppingBagIcon, path: '/rwa-market' },
   { name: 'Transaction History', icon: ClockIcon, path: '/transaction-history' },
-  { name: 'cUSD Management', icon: CurrencyDollarIcon, path: '/cusd-management' },
-  { name: 'AI Services', icon: CpuChipIcon, path: '/ai-services' },
+  { name: 'DeFi Management', icon: CurrencyDollarIcon, path: '/cusd-management' },
   { name: 'Governance', icon: UsersIcon, path: '/governance' },
-  { name: 'Protocol Analytics', icon: ChartPieIcon, path: '/protocol-analytics' },
+  { name: 'Institutions Tokenizer', icon: BuildingLibraryIcon, path: '/institutions-tokenizer' },
   { name: 'Settings & Account', icon: Cog6ToothIcon, path: '/settings' },
 ];
 
